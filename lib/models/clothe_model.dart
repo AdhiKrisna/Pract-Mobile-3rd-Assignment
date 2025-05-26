@@ -56,7 +56,7 @@ class ClotheModel {
       price= json['price'] as int?;
       sold= json['sold'] as int?;
       // rating = json['rating']as double?;
-      rating = json['rating'] as double?;
+      rating = json['rating'] != null ? (json['rating'] as num).toDouble() : null;
       stock= json['stock'] as int?;
       yearReleased= json['yearReleased'] as int?;
     }
