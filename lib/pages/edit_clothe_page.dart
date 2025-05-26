@@ -51,7 +51,7 @@ class _EditClothePageState extends State<EditClothePage> {
         sold: int.parse(sold.text),
         stock: int.parse(stock.text),
         yearReleased: int.parse(year.text),
-        rating: int.parse(rating.text),
+        rating: double.parse(rating.text),
       );
 
       final response = await ClotheApi.updateClothe(updatedClothe, widget.id);

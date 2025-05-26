@@ -47,7 +47,9 @@ class _CreateClothePageState extends State<CreateClothePage> {
         sold: int.parse(sold.text),
         stock: int.parse(stock.text),
         yearReleased: int.parse(year.text),
-        rating: int.parse(rating.text),
+        rating: double.parse(rating.text),
+
+
       );
       final response = await ClotheApi.createClothe(newUser);
       if (response["status"] == "Success") {

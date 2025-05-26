@@ -1,4 +1,4 @@
-  class ClotheModel {
+class ClotheModel {
     String? status;
     String? message;
     List<Clothe>? data;
@@ -31,7 +31,7 @@
     int? id;
     String? name, category, brand, material;
     int? price, sold, stock, yearReleased;
-    int? rating;
+    double? rating;
 
     Clothe({
       this.id,
@@ -55,7 +55,8 @@
       material = json['material'];
       price= json['price'] as int?;
       sold= json['sold'] as int?;
-      rating= json['rating'] as int?;
+      // rating = json['rating']as double?;
+      rating = json['rating'] as double?;
       stock= json['stock'] as int?;
       yearReleased= json['yearReleased'] as int?;
     }

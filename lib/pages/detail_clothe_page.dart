@@ -82,7 +82,7 @@ class DetailClothePage extends StatelessWidget {
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(
-          clothe.rating != null ? "★ ${clothe.rating!.toStringAsFixed(1)}" : "No rating",
+          clothe.rating != null ? "★ ${clothe.rating!.toString()}" : "No rating",
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(
