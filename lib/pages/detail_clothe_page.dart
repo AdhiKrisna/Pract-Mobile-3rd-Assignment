@@ -11,11 +11,15 @@ class DetailClothePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clothe Detail", style: TextStyle(color: Colors.white)),
+        title: const Text("Clothe Detail", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-      body: Padding(padding: EdgeInsets.all(20), child: _clotheDetail()),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: _clotheDetail(),
+      ),
     );
   }
 
@@ -24,13 +28,11 @@ class DetailClothePage extends StatelessWidget {
       future: ClotheApi.getClotheById(id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error.toString()}");
+          return Center(child: Text("Error: ${snapshot.error.toString()}"));
         } else if (snapshot.hasData) {
           Clothe clothe = Clothe.fromJson(snapshot.data!["data"]);
           return _clothe(clothe);
-        }
-        // Jika masih loading, tampilkan loading screen di tengah layar
-        else {
+        } else {
           return const Center(child: CircularProgressIndicator());
         }
       },
@@ -38,58 +40,62 @@ class DetailClothePage extends StatelessWidget {
   }
 
   Widget _clothe(Clothe clothe) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 16,
+    return ListView(
       children: [
         Center(
           child: Text(
-            clothe.name!,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            clothe.name ?? 'No name',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              clothe.category!,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        const SizedBox(height: 20),
+        Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _infoRow("Category", clothe.category),
+                const Divider(),
+                _infoRow("Price", clothe.price != null ? "Rp. ${clothe.price}" : null),
+                const Divider(),
+                _infoRow("Brand", clothe.brand),
+                const Divider(),
+                _infoRow("Material", clothe.material),
+                const Divider(),
+                _infoRow("Sold", clothe.sold?.toString()),
+                const Divider(),
+                _infoRow("Stock", clothe.stock?.toString()),
+                const Divider(),
+                _infoRow("Rating", clothe.rating != null ? "★ ${clothe.rating}" : null),
+                const Divider(),
+                _infoRow("Year Released", clothe.yearReleased?.toString()),
+              ],
             ),
-            Text(
-              " | ",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              clothe.price != null ? "Rp. ${clothe.price.toString()}" : "No price",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ],
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _infoRow(String label, String? value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
         Text(
-          "Brand: ${clothe.brand!}",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          "$label:",
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
-        Text(
-          clothe.material != null ? "Material: ${clothe.material!}" : "No material",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Expanded(
+          child: Text(
+            value ?? "N/A",
+            textAlign: TextAlign.end,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
-        Text(
-          clothe.sold != null ? "Sold: ${clothe.sold.toString()}" : "No sold",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          clothe.stock != null ? "Stock: ${clothe.stock.toString()}" : "No stock",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          clothe.rating != null ? "★ ${clothe.rating!.toString()}" : "No rating",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          clothe.yearReleased != null ? "Released: ${clothe.yearReleased.toString()}" : "No year released",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        
       ],
     );
   }
